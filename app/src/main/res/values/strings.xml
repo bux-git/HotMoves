@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">热门电影</string>
+    <string name="main_top_rated">评分</string>
+    <string name="main_popular">热门</string>
+
+    <string name="movie_detail_title">电影详情</string>
+
+    <string name="release_date_format">上映日期:%s</string>
+    <string name="runtime_format">时长:%s分钟</string>
+    <string name="popularity_format">人气:%s</string>
+    <string name="vote_average_format">评分:%s</string>
+    <string name="vote_count_format">投票人数:%s</string>
+    <string name="introducation">简介：</string>
+
+</resources>
