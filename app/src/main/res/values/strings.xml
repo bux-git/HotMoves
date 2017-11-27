@@ -11,5 +11,13 @@
     <string name="vote_average_format">评分:%s</string>
     <string name="vote_count_format">投票人数:%s</string>
     <string name="introducation">简介：</string>
+    <string name="setting">setting</string>
+    <string name="movie_setting_title">设置</string>
 
+    <string name="sort_value_key">sort_value</string>
+
+    <string name="sort_default_value">top_rated</string>
+    <string name="sort_type">排序类型</string>
+    <string name="sort_type_title">选择排序类型</string>
+    <string name="sort_type_summary">设置首页电影列表排列方式</string>
 </resources>

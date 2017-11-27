@@ -1,13 +1,16 @@
 package com.example.lym.hotmoves;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
@@ -15,20 +18,26 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.lym.hotmoves.bean.MovieBean;
 import com.example.lym.hotmoves.util.NetWorkTask;
 import com.example.lym.hotmoves.util.NetworkUtils;
+import com.example.lym.hotmoves.util.PreferenceUtils;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWorkCallBack {
     private static final String TAG = "MainActivity";
 
-    private RecyclerView mRecyclerView;
-    private ProgressBar mPbLoading;
-    private RadioGroup mRadioGroup;
+    @BindView(R.id.rv_moves_list)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.pb_loading)
+    ProgressBar mPbLoading;
+
 
     private MovieAdapter mMovieAdapter;
     private GridLayoutManager mLayoutManager;
 
-    private static final int SPAN_COUNT = 2;
+    private int SPAN_COUNT = 2;
     private String mPath;
     private int mPage = 1;
     //刷新状态
@@ -39,49 +48,70 @@ public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-
-            mRecyclerView = findViewById(R.id.rv_moves_list);
-            mPbLoading = findViewById(R.id.pb_loading);
-            mRadioGroup = findViewById(R.id.rg_group);
-
-            mRecyclerView.setLayoutManager(mLayoutManager = new GridLayoutManager(this, 2));
-            mRecyclerView.setHasFixedSize(true);
-
-            //获取屏幕宽度
-            WindowManager wm = this.getWindowManager();
-            int width = wm.getDefaultDisplay().getWidth();
-
-            mRecyclerView.setAdapter(mMovieAdapter = new MovieAdapter(new MovieAdapter.OnMovieItemClickListener() {
-                @Override
-                public void movieItemClick(MovieBean movieBean) {
-
-                    MovieDetailActivity.start(MainActivity.this, movieBean.getId());
-                }
-            }, width / SPAN_COUNT));
-
-            initListener();
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
 
-            refreshData(NetworkUtils.POPULAR_PATH);
+        // 判断Android当前的屏幕是横屏还是竖屏。横竖屏判断
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //竖屏
+            SPAN_COUNT = 2;
+        } else {
+
+            SPAN_COUNT = 4;
+        }
+
+        mRecyclerView.setLayoutManager(mLayoutManager = new GridLayoutManager(this, SPAN_COUNT));
+        mRecyclerView.setHasFixedSize(true);
+
+        //获取屏幕宽度
+        WindowManager wm = this.getWindowManager();
+        int width = wm.getDefaultDisplay().getWidth();
+
+        mRecyclerView.setAdapter(mMovieAdapter = new MovieAdapter(new MovieAdapter.OnMovieItemClickListener() {
+            @Override
+            public void movieItemClick(MovieBean movieBean) {
+
+                MovieDetailActivity.start(MainActivity.this, movieBean);
+            }
+        }, width / SPAN_COUNT));
+
+        initListener();
+
+
+        refreshData(PreferenceUtils.getSortPath(this));
 
     }
 
-    private void initListener() {
-        //监听排序类型
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                //热门
-                if (checkedId == R.id.rb_popular) {
-                    refreshData(NetworkUtils.POPULAR_PATH);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
-                } else if (checkedId == R.id.rb_top_rated) {
-                    //评分排行
-                    refreshData(NetworkUtils.TOP_RATED_PATH);
-                }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_setting) {
+            SettingsActivity.start(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SettingsActivity.REQUEST_CODE) {
+                refreshData(PreferenceUtils.getSortPath(this));
             }
-        });
+        }
+    }
+
+
+    private void initListener() {
+
 
         //加载更多
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -144,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWo
         //检测是否是最后一页
         if (jsonObject.getInteger("page").equals(jsonObject.getInteger("total_pages"))) {
             mIsNoMore = true;
-        }else{
+        } else {
             mIsNoMore = false;
         }
 

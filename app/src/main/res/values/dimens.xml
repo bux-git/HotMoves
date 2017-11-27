@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_moves_item_padding">1dp</dimen>
+    <dimen name="progress_bar_size">42dp</dimen>
+
+
+    <dimen name="detail_poster_width">100dp</dimen>
+    <dimen name="detail_poster_height">150dp</dimen>
+    <dimen name="detail_poster_margin_left">18dp</dimen>
+    <dimen name="detail_poster_margin_right">12dp</dimen>
+    <dimen name="detail_original_title_size">18sp</dimen>
+    <dimen name="detail_introduction_margin_top">24dp</dimen>
+    <dimen name="detail_introduction_text_size">18sp</dimen>
+    <dimen name="detail_overview_margin_top">4dp</dimen>
+    <dimen name="detail_overview_margin_left">12dp</dimen>
+    <dimen name="detail_overview_text_size">16sp</dimen>
+    <dimen name="detail_content_padding_left_right">16dp</dimen>
+    <dimen name="detail_content_padding_top">6dp</dimen>
+
+</resources>

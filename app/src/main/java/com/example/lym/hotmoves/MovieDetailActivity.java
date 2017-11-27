@@ -14,9 +14,13 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.example.lym.hotmoves.bean.MovieBean;
 import com.example.lym.hotmoves.bean.MovieDetailBean;
 import com.example.lym.hotmoves.util.NetWorkTask;
 import com.example.lym.hotmoves.util.NetworkUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @Description：
@@ -25,66 +29,69 @@ import com.example.lym.hotmoves.util.NetworkUtils;
  */
 
 public class MovieDetailActivity extends AppCompatActivity implements NetWorkTask.NetWorkCallBack {
-    private static final String MOVIE_ID_EXTRA = "movieId";
+    private static final String MOVIE_ID_EXTRA = "movie";
 
     //海报
-    private ImageView mIvPoster;
+    @BindView(R.id.iv_poster)
+    ImageView mIvPoster;
     //原名
-    private TextView mTvOriginalTitle;
+    @BindView(R.id.tv_original_title)
+    TextView mTvOriginalTitle;
     //上映日期
-    private TextView mTvReleaseDate;
+    @BindView(R.id.tv_release_date)
+    TextView mTvReleaseDate;
     //时长
-    private TextView mTvRuntime;
+    @BindView(R.id.tv_runtime)
+    TextView mTvRuntime;
     //人气
-    private TextView mTvPopularity;
+    @BindView(R.id.tv_popularity)
+    TextView mTvPopularity;
 
 
     //评分
-    private TextView mTvVoteAverAge;
+    @BindView(R.id.tv_vote_average)
+    TextView mTvVoteAverAge;
     //投票人数
-    private TextView mTvVoteCount;
+    @BindView(R.id.tv_vote_count)
+    TextView mTvVoteCount;
 
-    private TextView mTvIntroduction;
+    @BindView(R.id.tv_introduction)
+    TextView mTvIntroduction;
     //简介
-    private TextView mTvOverView;
+    @BindView(R.id.tv_overview)
+    TextView mTvOverView;
+    @BindView(R.id.pb_loading)
+    ProgressBar mPbLoading;
 
-    private ProgressBar mPbLoading;
 
+    private MovieBean mMovieBean;
 
-    private int mMovieId;
-
-    public static void start(Context context, int movieId) {
+    public static void start(Context context, MovieBean movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
-        intent.putExtra(MOVIE_ID_EXTRA, movieId);
+        intent.putExtra(MOVIE_ID_EXTRA, movie);
         context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_movie_detail_layout);
-            setTitle(R.string.movie_detail_title);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_movie_detail_layout);
+        ButterKnife.bind(this);
 
-            mIvPoster = findViewById(R.id.iv_poster);
-            mTvOriginalTitle = findViewById(R.id.tv_original_title);
-            mTvReleaseDate = findViewById(R.id.tv_release_date);
-            mTvRuntime = findViewById(R.id.tv_runtime);
-            mTvPopularity = findViewById(R.id.tv_popularity);
+        setTitle(R.string.movie_detail_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            mTvVoteAverAge = findViewById(R.id.tv_vote_average);
-            mTvVoteCount = findViewById(R.id.tv_vote_count);
-            mTvIntroduction = findViewById(R.id.tv_introduction);
-            mTvOverView = findViewById(R.id.tv_overview);
-            mPbLoading = findViewById(R.id.pb_loading);
 
-            Intent intent = getIntent();
-            if (intent.hasExtra(MOVIE_ID_EXTRA)) {
-                mMovieId = intent.getIntExtra(MOVIE_ID_EXTRA, 0);
-                getData();
-            } else {
-                finish();
-            }
+        Intent intent = getIntent();
+        if (intent.hasExtra(MOVIE_ID_EXTRA)) {
+            mMovieBean = intent.getParcelableExtra(MOVIE_ID_EXTRA);
+            setUpDataView(mMovieBean.getOriginal_title(), mMovieBean.getRelease_date(), ""
+                    ,String.valueOf(mMovieBean.getPopularity()), String.valueOf(mMovieBean.getVote_average()), String.valueOf(mMovieBean.getVote_count())
+                    , mMovieBean.getOverview(),mMovieBean.getPoster_path());
+           // getData();
+        } else {
+            finish();
+        }
 
 
     }
@@ -107,17 +114,28 @@ public class MovieDetailActivity extends AppCompatActivity implements NetWorkTas
     @Override
     public void onSuccess(JSONObject jsonObject) {
         MovieDetailBean bean = jsonObject.toJavaObject(MovieDetailBean.class);
-        Glide.with(this).load(NetworkUtils.getImagePath(bean.getPoster_path())).into(mIvPoster);
 
-        mTvOriginalTitle.setText(bean.getOriginal_title());
-        mTvReleaseDate.setText(getString(R.string.release_date_format, bean.getRelease_date()));
-        mTvRuntime.setText(getString(R.string.runtime_format,String.valueOf(bean.getRuntime())));
-        mTvPopularity.setText(getString(R.string.popularity_format,String.valueOf(bean.getPopularity())));
-        mTvVoteAverAge.setText(getString(R.string.vote_average_format,String.valueOf(bean.getVote_average())));
 
-        mTvVoteCount.setText(getString(R.string.vote_count_format,String.valueOf(bean.getVote_count())));
+        setUpDataView(bean.getOriginal_title(), bean.getRelease_date(), String.valueOf(bean.getRuntime())
+                , String.valueOf(bean.getPopularity()), String.valueOf(bean.getVote_average()), String.valueOf(bean.getVote_count())
+                , bean.getOverview(),bean.getPoster_path());
+
+    }
+
+    private void setUpDataView(String originalTitle, String releaseDate, String runTime, String popularity, String voteAverage
+            , String voteCount, String overView,String path) {
+        mTvOriginalTitle.setText(originalTitle);
+        mTvReleaseDate.setText(getString(R.string.release_date_format, releaseDate));
+        mTvRuntime.setText(getString(R.string.runtime_format, runTime));
+        mTvPopularity.setText(getString(R.string.popularity_format, popularity));
+        mTvVoteAverAge.setText(getString(R.string.vote_average_format, voteAverage));
+
+        mTvVoteCount.setText(getString(R.string.vote_count_format, voteCount));
         mTvIntroduction.setText(R.string.introducation);
-        mTvOverView.setText(bean.getOverview());
+
+        mTvOverView.setText(overView);
+
+        Glide.with(this).load(NetworkUtils.getImagePath(path)).into(mIvPoster);
     }
 
     @Override
@@ -131,6 +149,6 @@ public class MovieDetailActivity extends AppCompatActivity implements NetWorkTas
     }
 
     public void getData() {
-        new NetWorkTask(this).execute(NetworkUtils.getMovieDetail(mMovieId));
+        new NetWorkTask(this).execute(NetworkUtils.getMovieDetail(mMovieBean.getId()));
     }
 }

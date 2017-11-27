@@ -8,39 +8,16 @@
     android:orientation="vertical"
     tools:context="com.example.lym.hotmoves.MainActivity">
 
-    <RadioGroup
-        android:id="@+id/rg_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="12dp"
-        android:background="@drawable/ranking_group_bg_shape"
-        android:orientation="horizontal"
-        android:padding="1dp">
-        <RadioButton
-            android:id="@+id/rb_popular"
-            style="@style/radiobuttom"
-            android:background="@drawable/radio_bg_color_left_selector"
-            android:checked="true"
-            android:text="@string/main_popular"/>
-        <RadioButton
-            android:id="@+id/rb_top_rated"
-            style="@style/radiobuttom"
-            android:background="@drawable/radio_bg_color_right_selector"
-            android:text="@string/main_top_rated"/>
-    </RadioGroup>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_moves_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rg_group"/>
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:id="@+id/pb_loading"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
         android:layout_centerInParent="true"/>
 
 </RelativeLayout>

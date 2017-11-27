@@ -1,5 +1,9 @@
 package com.example.lym.hotmoves.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +12,7 @@ import java.util.List;
  * @email: 471025316@qq.com
  */
 
-public class MovieBean {
+public class MovieBean implements Parcelable{
 
 
     /**
@@ -154,4 +158,61 @@ public class MovieBean {
     public void setGenre_ids(List<Integer> genre_ids) {
         this.genre_ids = genre_ids;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.vote_count);
+        dest.writeInt(this.id);
+        dest.writeByte(this.video ? (byte) 1 : (byte) 0);
+        dest.writeDouble(this.vote_average);
+        dest.writeString(this.title);
+        dest.writeDouble(this.popularity);
+        dest.writeString(this.poster_path);
+        dest.writeString(this.original_language);
+        dest.writeString(this.original_title);
+        dest.writeString(this.backdrop_path);
+        dest.writeByte(this.adult ? (byte) 1 : (byte) 0);
+        dest.writeString(this.overview);
+        dest.writeString(this.release_date);
+        dest.writeList(this.genre_ids);
+    }
+
+    public MovieBean() {
+    }
+
+    protected MovieBean(Parcel in) {
+        this.vote_count = in.readInt();
+        this.id = in.readInt();
+        this.video = in.readByte() != 0;
+        this.vote_average = in.readDouble();
+        this.title = in.readString();
+        this.popularity = in.readDouble();
+        this.poster_path = in.readString();
+        this.original_language = in.readString();
+        this.original_title = in.readString();
+        this.backdrop_path = in.readString();
+        this.adult = in.readByte() != 0;
+        this.overview = in.readString();
+        this.release_date = in.readString();
+        this.genre_ids = new ArrayList<Integer>();
+        in.readList(this.genre_ids, Integer.class.getClassLoader());
+    }
+
+    public static final Creator<MovieBean> CREATOR = new Creator<MovieBean>() {
+        @Override
+        public MovieBean createFromParcel(Parcel source) {
+            return new MovieBean(source);
+        }
+
+        @Override
+        public MovieBean[] newArray(int size) {
+            return new MovieBean[size];
+        }
+    };
 }

@@ -1,87 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="6dp">
 
-    <ImageView
-        android:id="@+id/iv_poster"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="12dp"
-        tools:background="@mipmap/ic_launcher_round"/>
-    <TextView
-        android:id="@+id/tv_original_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_poster"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text="电影名字电影名字电影名字电影名字电影名字电影名字"/>
-
-
-    <TextView
-        android:id="@+id/tv_release_date"
-        style="@style/movie_details_text_style"
-        android:layout_below="@id/tv_original_title"
-        android:layout_toRightOf="@+id/iv_poster"
-        tools:text="上映日期:2017-02-26"/>
-
-    <TextView
-        android:id="@+id/tv_runtime"
-        style="@style/movie_details_text_style"
-        android:layout_below="@id/tv_release_date"
-        android:layout_toRightOf="@+id/iv_poster"
-        tools:text="时长:135min"/>
-
-    <TextView
-        android:id="@+id/tv_popularity"
-        style="@style/movie_details_text_style"
-        android:layout_below="@id/tv_runtime"
-        android:layout_toRightOf="@+id/iv_poster"
-        tools:text="人气:1146.808133"/>
-
-    <TextView
-        android:id="@+id/tv_vote_average"
-        style="@style/movie_details_text_style"
-        android:layout_below="@id/tv_popularity"
-        android:layout_marginRight="12dp"
-        android:layout_toRightOf="@+id/iv_poster"
-        tools:text="评分:9.9"/>
-
-    <TextView
-        android:id="@+id/tv_vote_count"
-        style="@style/movie_details_text_style"
-        android:layout_below="@id/tv_popularity"
-        android:layout_toRightOf="@+id/tv_vote_average"
-        tools:text="投票人数:9.9"/>
-    <TextView
-        android:id="@+id/tv_introduction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/iv_poster"
-        android:layout_marginTop="24dp"
-        tools:text="@string/introducation"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/tv_overview"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_introduction"
-        android:layout_marginTop="4dp"
-        android:paddingLeft="12dp"
-        android:textSize="16sp"
-        tools:text="In a small town in Maine, seven children known as The Losers Club come face to face with life problems, bullies and a monster that takes the shape of a clown called Pennywise."/>
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_centerInParent="true"/>
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/detail_content_padding_left_right"
+        android:paddingRight="@dimen/detail_content_padding_left_right"
+        android:paddingTop="@dimen/detail_content_padding_top">
+
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="@dimen/detail_poster_width"
+            android:layout_height="@dimen/detail_poster_height"
+            android:layout_marginLeft="@dimen/detail_poster_margin_left"
+            android:layout_marginRight="@dimen/detail_poster_margin_right"
+            tools:background="@mipmap/ic_launcher_round"/>
+        <TextView
+            android:id="@+id/tv_original_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_poster"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/detail_original_title_size"
+            android:textStyle="bold"
+            tools:text="电影名字电影名字电影名字电影名字电影名字电影名字"/>
+
+
+        <TextView
+            android:id="@+id/tv_release_date"
+            style="@style/movie_details_text_style"
+            android:layout_below="@id/tv_original_title"
+            android:layout_toRightOf="@+id/iv_poster"
+            tools:text="上映日期:2017-02-26"/>
+
+        <TextView
+            android:id="@+id/tv_runtime"
+            style="@style/movie_details_text_style"
+            android:layout_below="@id/tv_release_date"
+            android:layout_toRightOf="@+id/iv_poster"
+            tools:text="时长:135min"/>
+
+        <TextView
+            android:id="@+id/tv_popularity"
+            style="@style/movie_details_text_style"
+            android:layout_below="@id/tv_runtime"
+            android:layout_toRightOf="@+id/iv_poster"
+            tools:text="人气:1146.808133"/>
+
+        <TextView
+            android:id="@+id/tv_vote_average"
+            style="@style/movie_details_text_style"
+            android:layout_below="@id/tv_popularity"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@+id/iv_poster"
+            tools:text="评分:9.9"/>
+
+        <TextView
+            android:id="@+id/tv_vote_count"
+            style="@style/movie_details_text_style"
+            android:layout_below="@id/tv_popularity"
+            android:layout_toRightOf="@+id/tv_vote_average"
+            tools:text="投票人数:9.9"/>
+        <TextView
+            android:id="@+id/tv_introduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_poster"
+            android:layout_marginTop="@dimen/detail_introduction_margin_top"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/detail_introduction_text_size"
+            tools:text="@string/introducation"/>
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_introduction"
+            android:layout_marginTop="@dimen/detail_overview_margin_top"
+            android:paddingLeft="@dimen/detail_overview_margin_left"
+            android:textSize="@dimen/detail_overview_text_size"
+            tools:text="In a small town in Maine, seven children known as The Losers Club come face to face with life problems, bullies and a monster that takes the shape of a clown called Pennywise."/>
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+</ScrollView>

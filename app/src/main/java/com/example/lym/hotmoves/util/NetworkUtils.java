@@ -34,7 +34,7 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     //developers.themoviedb.org 秘钥
-    private static final String APP_KEY = "";
+    private static final String APP_KEY = "5247dd1e27f05761e0bceaff16ffaf52";
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
     //图片加载路径
@@ -42,8 +42,6 @@ public final class NetworkUtils {
 
     //电影path
     private static final String API_TYPE_MOVIE_PATH = "movie";
-    public static final String TOP_RATED_PATH = "top_rated";
-    public static final String POPULAR_PATH = "popular";
 
 
     private static final String LANGUAGE = "zn-CN";
