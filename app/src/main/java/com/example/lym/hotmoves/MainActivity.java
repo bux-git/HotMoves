@@ -15,8 +15,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.lym.hotmoves.adapter.MovieAdapter;
 import com.example.lym.hotmoves.bean.MovieBean;
-import com.example.lym.hotmoves.util.NetWorkTask;
+import com.example.lym.hotmoves.util.NetWorkTaskNew;
 import com.example.lym.hotmoves.util.NetworkUtils;
 import com.example.lym.hotmoves.util.PreferenceUtils;
 
@@ -25,8 +26,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWorkCallBack {
+public class MainActivity extends AppCompatActivity implements NetWorkTaskNew.NetWorkCallBack {
     private static final String TAG = "MainActivity";
+    private static final int REFRESH_ID = 1;
 
     @BindView(R.id.rv_moves_list)
     RecyclerView mRecyclerView;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWo
     private boolean mIsRefresh = true;
     private boolean mIsNoMore = true;
 
+    private NetWorkTaskNew mTaskNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWo
 
         initListener();
 
-
+        mTaskNew = new NetWorkTaskNew(this);
         refreshData(PreferenceUtils.getSortPath(this));
 
     }
@@ -158,7 +161,12 @@ public class MainActivity extends AppCompatActivity implements NetWorkTask.NetWo
      * 获取网络数据
      */
     public void getData() {
-        new NetWorkTask(this).execute(NetworkUtils.getMovieListByType(mPath, mIsRefresh ? mPage = 1 : ++mPage));
+
+        if (mIsRefresh) {
+            mTaskNew.initLoader(REFRESH_ID, NetworkUtils.getMovieListByType(mPath, mPage = 1));
+        } else {
+            mTaskNew.initLoader(REFRESH_ID, NetworkUtils.getMovieListByType(mPath, ++mPage));
+        }
     }
 
     @Override

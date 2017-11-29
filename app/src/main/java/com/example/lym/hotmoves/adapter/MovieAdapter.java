@@ -1,4 +1,4 @@
-package com.example.lym.hotmoves;
+package com.example.lym.hotmoves.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.lym.hotmoves.R;
 import com.example.lym.hotmoves.bean.MovieBean;
 import com.example.lym.hotmoves.util.NetworkUtils;
 

@@ -34,7 +34,7 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     //developers.themoviedb.org 秘钥
-    private static final String APP_KEY = "";
+    private static final String APP_KEY = "5247dd1e27f05761e0bceaff16ffaf52";
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
     //图片加载路径
@@ -59,21 +59,22 @@ public final class NetworkUtils {
      */
     public static URL getMovieListByType(String path, int page) {
 
-        Map<String,String> map = new HashMap();
+        Map<String, String> map = new HashMap();
         map.put(PAGE_PARAM, String.valueOf(page));
 
-        URL url = buildUrl(map,API_TYPE_MOVIE_PATH,path);
+        URL url = buildUrl(map, API_TYPE_MOVIE_PATH, path);
 
         return url;
     }
 
     /**
      * 电影详情
+     *
      * @param movieId
      * @return
      */
-    public static URL getMovieDetail(int movieId){
-        URL url = buildUrl(null, API_TYPE_MOVIE_PATH,String.valueOf(movieId));
+    public static URL getMovieDetail(int movieId) {
+        URL url = buildUrl(null, API_TYPE_MOVIE_PATH, String.valueOf(movieId));
         return url;
     }
 
@@ -83,15 +84,15 @@ public final class NetworkUtils {
                 .appendQueryParameter(API_KEY_PARAM, APP_KEY)
                 .appendQueryParameter(LANGUAGE_PARAM, LANGUAGE);
 
-        for(String s:path){
+        for (String s : path) {
             builder.appendPath(s);
         }
-        if(query!=null) {
+        if (query != null) {
             for (Map.Entry<String, String> kv : query.entrySet()) {
                 builder.appendQueryParameter(kv.getKey(), kv.getValue());
             }
         }
-        URL url=null;
+        URL url = null;
 
         try {
             url = new URL(builder.build().toString());
@@ -121,7 +122,7 @@ public final class NetworkUtils {
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setConnectTimeout(30*1000);
+        urlConnection.setConnectTimeout(30 * 1000);
         try {
             InputStream in = urlConnection.getInputStream();
 
